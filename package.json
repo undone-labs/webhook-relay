@@ -1,8 +1,12 @@
 {
     "name": "webhook-relay",
-    "version": "0.2.0",
+    "version": "0.1.0",
     "description": "A relay service for passing webhook payloads to local machines",
     "main": "worker.js",
+    "workspaces": [
+      "packages/worker",
+      "packages/client"
+    ],
     "scripts": {
       "build": "rollup -c",
       "start": "wrangler dev",
@@ -25,5 +29,9 @@
       "rollup-plugin-node-resolve": "^5.2.0",
       "rollup-plugin-terser": "^7.0.2"
     },
-    "dependencies": {}
+    "dependencies": {},
+    "engines": {
+      "node": "18.x",
+      "npm": ">=7.x"
+    }
   }

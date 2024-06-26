@@ -1,1 +1,7 @@
-export const localPort = 8888;
+let publicUrl = '';
+
+export const setPublicUrl = (url) => {
+  publicUrl = url;
+};
+
+export const getPublicUrl = () => publicUrl;

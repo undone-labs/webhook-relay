@@ -1,5 +1,5 @@
-import resolve from 'rollup-plugin-node-resolve'
-import { terser } from 'rollup-plugin-terser'
+import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: 'worker.js',
@@ -12,4 +12,4 @@ export default {
     resolve(),
     terser()
   ]
-}
+};

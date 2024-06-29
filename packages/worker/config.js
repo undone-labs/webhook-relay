@@ -1,7 +1,7 @@
-let publicUrl = '';
+let tunnelUrl = '';
 
-export const setPublicUrl = (url) => {
-  publicUrl = url;
+export const setTunnelUrl = (url) => {
+  tunnelUrl = url;
 };
 
-export const getPublicUrl = () => publicUrl;
+export const getTunnelUrl = () => tunnelUrl;

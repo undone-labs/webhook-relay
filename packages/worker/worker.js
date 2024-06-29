@@ -1,4 +1,4 @@
-import { getPublicUrl, setPublicUrl } from './config.js';
+import { getTunnelUrl, setTunnelUrl } from './config.js';
 
 addEventListener('fetch', event => {
   const url = new URL(event.request.url);
@@ -13,8 +13,8 @@ addEventListener('fetch', event => {
 async function handleBind(request) {
   try {
     const { url } = await request.json();
-    setPublicUrl(url);
-    return new Response('Public URL bound successfully', { status: 200 });
+    setTunnelUrl(url);
+    return new Response('Tunnel URL bound successfully', { status: 200 });
   } catch (err) {
     return new Response(err.message, { status: 500 });
   }
@@ -23,12 +23,12 @@ async function handleBind(request) {
 async function handleRequest(request) {
   try {
     const url = new URL(request.url);
-    const publicUrl = getPublicUrl();
-    if (!publicUrl) {
-      throw new Error('Public URL not bound');
+    const tunnelUrl = getTunnelUrl();
+    if (!tunnelUrl) {
+      throw new Error('Tunnel URL not bound');
     }
 
-    const localUrl = `${publicUrl}${url.pathname}${url.search}`;
+    const localUrl = `${tunnelUrl}${url.pathname}${url.search}`;
 
     const response = await fetch(localUrl, {
       method: request.method,

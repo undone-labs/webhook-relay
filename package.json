@@ -23,7 +23,7 @@
     "devDependencies": {},
     "dependencies": {},
     "engines": {
-      "node": "18.x",
+      "node": ">=18.x",
       "npm": ">=7.x"
     }
   }

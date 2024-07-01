@@ -1,6 +1,6 @@
 {
   "name": "worker",
-  "main": "worker.js",
+  "main": "server.js",
   "scripts": {
     "build": "rollup -c",
     "deploy": "wrangler publish"

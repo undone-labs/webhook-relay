@@ -2,7 +2,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'worker.js',
+  input: 'server.js',
   output: {
     file: 'dist/worker.js',
     format: 'iife',

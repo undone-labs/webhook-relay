@@ -1,7 +1,9 @@
-let tunnelUrl = '';
+const routeMap = new Map();
 
-export const setTunnelUrl = (url) => {
-  tunnelUrl = url;
+export const setRoute = (route, url) => {
+  routeMap.set(route, url);
 };
 
-export const getTunnelUrl = () => tunnelUrl;
+export const getRoute = (route) => {
+  return routeMap.get(route);
+};

@@ -1,4 +1,4 @@
-import { getTunnelUrl, setTunnelUrl } from './config.js';
+import { getRoute, setRoute } from './config.js';
 
 addEventListener('fetch', event => {
   const url = new URL(event.request.url);
@@ -12,9 +12,9 @@ addEventListener('fetch', event => {
 
 async function handleBind(request) {
   try {
-    const { url } = await request.json();
-    setTunnelUrl(url);
-    return new Response('Tunnel URL bound successfully', { status: 200 });
+    const { url, route } = await request.json();
+    setRoute(route, url);
+    return new Response(`Tunnel URL bound successfully for route ${route}`, { status: 200 });
   } catch (err) {
     return new Response(err.message, { status: 500 });
   }
@@ -23,9 +23,10 @@ async function handleBind(request) {
 async function handleRequest(request) {
   try {
     const url = new URL(request.url);
-    const tunnelUrl = getTunnelUrl();
+    const route = url.pathname.split('/')[1]; // Extract route from path
+    const tunnelUrl = getRoute(`/${route}`);
     if (!tunnelUrl) {
-      throw new Error('Tunnel URL not bound');
+      throw new Error('Tunnel URL not bound for this route');
     }
 
     const localUrl = `${tunnelUrl}${url.pathname}${url.search}`;

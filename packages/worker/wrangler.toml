@@ -1,12 +1,12 @@
 name = "webhook-relay-worker"
-main = "packages/worker/server.js"
+main = "server.js"
 compatibility_date = "2024-07-01"
 
 account_id = "${CF_ACCOUNT_ID}"
 workers_dev = true #  Set to false because using custom domain
+send_metrics = true
 
-[[deployments]]
-environment = "production"
+[[env.production]]
 zone_id = "${CF_ZONE_ID}"
 routes = [
   { pattern = "https://${CF_DOMAIN}/*", script = "webhook-relay-worker" }

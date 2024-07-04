@@ -1,4 +1,4 @@
-import { getRoute, setRoute } from './config.js';
+import { setRoute, getRoute } from './config.js';
 
 addEventListener('fetch', event => {
   const url = new URL(event.request.url);
@@ -6,7 +6,14 @@ addEventListener('fetch', event => {
   if (url.pathname === '/bind' && event.request.method === 'POST') {
     event.respondWith(handleBind(event.request));
   } else {
-    event.respondWith(handleRequest(event.request));
+    const routes = process.env.RELAY_ROUTES.split(',');
+    const matchingRoute = routes.find(route => url.pathname === `/${route}`);
+
+    if (matchingRoute) {
+      event.respondWith(handleRequest(event.request, matchingRoute));
+    } else {
+      event.respondWith(new Response('Matching route not found', { status: 404 }));
+    }
   }
 });
 
@@ -14,24 +21,22 @@ async function handleBind(request) {
   try {
     const { url, route } = await request.json();
     setRoute(route, url);
-    return new Response(`Tunnel URL bound successfully for route ${route}`, { status: 200 });
+    return new Response('Route bound successfully', { status: 200 });
   } catch (err) {
     return new Response(err.message, { status: 500 });
   }
 }
 
-async function handleRequest(request) {
+async function handleRequest(request, route) {
   try {
-    const url = new URL(request.url);
-    const route = url.pathname.split('/')[1]; // Extract route from path
-    const tunnelUrl = getRoute(`/${route}`);
-    if (!tunnelUrl) {
-      throw new Error('Tunnel URL not bound for this route');
+    const clientUrl = getRoute(route);
+
+    if (!clientUrl) {
+      // Not to be confused with route not found above lol
+      throw new Error('Route not bound');
     }
 
-    const localUrl = `${tunnelUrl}${url.pathname}${url.search}`;
-
-    const response = await fetch(localUrl, {
+    const response = await fetch(clientUrl, {
       method: request.method,
       headers: request.headers,
       body: request.body,

@@ -1,13 +1,13 @@
 name = "webhook-relay-worker"
-main = "packages/worker/server.js"
+main = "server.js"
 compatibility_date = "2024-07-01"
 
-account_id = "${CF_ACCOUNT_ID}"
-workers_dev = false #  Set to false because using custom domain
+account_id = "4767ff40a686fee838e7093a349a7028"
+workers_dev = true
+send_metrics = true
 
-[[deployments]]
-environment = "production"
-zone_id = "${CF_ZONE_ID}"
+[[env.production]]
+zone_id = "edfe3dd3a4924e0d78d3136b9df577ce"
 routes = [
-  { pattern = "https://${CF_DOMAIN}/*", script = "webhook-relay-worker" }
+  { pattern = "https://relay.undonelabs.com/*", script = "webhook-relay-worker" }
 ]

@@ -1,9 +1,9 @@
 name = "webhook-relay-worker"
-main = "server.js"
+main = "dist/worker.js"
 compatibility_date = "2024-07-01"
 
 account_id = "4767ff40a686fee838e7093a349a7028"
-workers_dev = true
+workers_dev = false
 send_metrics = true
 
 [[env.production]]
@@ -11,3 +11,6 @@ zone_id = "edfe3dd3a4924e0d78d3136b9df577ce"
 routes = [
   { pattern = "https://relay.undonelabs.com/*", script = "webhook-relay-worker" }
 ]
+
+[env.production.vars]
+RELAY_ROUTES = "foo,bar,custom-path"

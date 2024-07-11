@@ -4,7 +4,18 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 // Try getting variables from .env file
-dotenv.config();
+const localEnvPath = path.resolve(__dirname, '.env');
+const rootEnvPath = path.resolve(__dirname, '../../.env');
+
+if (fs.existsSync(localEnvPath)) {
+  dotenv.config({ path: localEnvPath });
+  console.log('.env loaded from package directory');
+} else if (fs.existsSync(rootEnvPath)) {
+  dotenv.config({ path: rootEnvPath });
+  console.log('.env loaded from repo root');
+} else {
+  throw new Error('No .env file found');
+}
 
 const requiredEnvs = [
   'RELAY_ROUTES',
@@ -14,7 +25,10 @@ const requiredEnvs = [
   'CF_DOMAIN'
 ];
 
+// Output loaded environment variables for troubleshooting
+console.log('Loaded environment variables:');
 requiredEnvs.forEach((envVar) => {
+  console.log(`${envVar}: ${process.env[envVar]}`);
   if (!process.env[envVar]) {
     throw new Error(`Environment variable ${envVar} is required but not set`);
   }

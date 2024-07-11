@@ -3,27 +3,28 @@
     "version": "0.1.0",
     "description": "A relay service for passing webhook payloads to local machines",
     "workspaces": [
-      "packages/worker",
-      "packages/client"
+        "packages/worker",
+        "packages/client"
     ],
     "scripts": {
-      "build": "npm run build -w worker"
+        "build": "npm run build -w worker"
     },
     "keywords": [
-      "relay",
-      "pass-through",
-      "webhook",
-      "localhost",
-      "local-development",
-      "cloudflare",
-      "worker"
+        "relay",
+        "pass-through",
+        "webhook",
+        "localhost",
+        "local-development",
+        "cloudflare",
+        "worker"
     ],
     "author": "Orun Bhuiyan",
     "license": "APL-2.0",
-    "devDependencies": {},
-    "dependencies": {},
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    },
     "engines": {
-      "node": ">=18.x",
-      "npm": ">=7.x"
+        "node": ">=18.x",
+        "npm": ">=7.x"
     }
-  }
+}

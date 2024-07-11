@@ -1,5 +1,6 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
+const path = require('path');
 const dotenv = require('dotenv');
 
 // Try getting variables from .env file
@@ -20,7 +21,8 @@ requiredEnvs.forEach((envVar) => {
 });
 
 // Read the wrangler.template.toml file
-let wranglerToml = fs.readFileSync('packages/worker/wrangler.template.toml', 'utf8');
+const templatePath = path.join(__dirname, 'wrangler.template.toml');
+let wranglerToml = fs.readFileSync(templatePath, 'utf8');
 
 // Replace the environment variables in the wrangler.template.toml file
 wranglerToml = wranglerToml.replace(/\$\{CF_ACCOUNT_ID\}/g, process.env.CF_ACCOUNT_ID)
@@ -30,7 +32,8 @@ wranglerToml = wranglerToml.replace(/\$\{CF_ACCOUNT_ID\}/g, process.env.CF_ACCOU
                             .replace(/\$\{RELAY_ROUTES\}/g, process.env.RELAY_ROUTES);
 
 // Write the modified wrangler.toml file
-fs.writeFileSync('packages/worker/wrangler.toml', wranglerToml);
+const wranglerTomlPath = path.join(__dirname, 'wrangler.toml');
+fs.writeFileSync(wranglerTomlPath, wranglerToml);
 
 console.log('Environment variables replaced in wrangler.toml');
 
@@ -43,7 +46,7 @@ const envs = {
   RELAY_ROUTES: process.env.RELAY_ROUTES,
 };
 
-execSync('wrangler deploy --config packages/worker/wrangler.toml', {
+execSync(`wrangler deploy --config ${wranglerTomlPath}`, {
   stdio: 'inherit',
   env: { ...process.env, ...envs }
 });

@@ -19,17 +19,17 @@ requiredEnvs.forEach((envVar) => {
   }
 });
 
-// Read the wrangler.toml file
-let wranglerToml = fs.readFileSync('packages/worker/wrangler.toml', 'utf8');
+// Read the wrangler.template.toml file
+let wranglerToml = fs.readFileSync('packages/worker/wrangler.template.toml', 'utf8');
 
-// Replace the environment variables in the wrangler.toml file
+// Replace the environment variables in the wrangler.template.toml file
 wranglerToml = wranglerToml.replace(/\$\{CF_ACCOUNT_ID\}/g, process.env.CF_ACCOUNT_ID)
                             .replace(/\$\{CF_ZONE_ID\}/g, process.env.CF_ZONE_ID)
                             .replace(/\$\{CLOUDFLARE_API_TOKEN\}/g, process.env.CLOUDFLARE_API_TOKEN)
                             .replace(/\$\{CF_DOMAIN\}/g, process.env.CF_DOMAIN)
                             .replace(/\$\{RELAY_ROUTES\}/g, process.env.RELAY_ROUTES);
 
-// Write the modified wrangler.toml file back
+// Write the modified wrangler.toml file
 fs.writeFileSync('packages/worker/wrangler.toml', wranglerToml);
 
 console.log('Environment variables replaced in wrangler.toml');

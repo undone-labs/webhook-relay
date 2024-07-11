@@ -1,4 +1,5 @@
 const { execSync } = require('child_process');
+const fs = require('fs');
 const dotenv = require('dotenv');
 
 // Try getting variables from .env file
@@ -18,6 +19,22 @@ requiredEnvs.forEach((envVar) => {
   }
 });
 
+// Read the wrangler.toml file
+let wranglerToml = fs.readFileSync('packages/worker/wrangler.toml', 'utf8');
+
+// Replace the environment variables in the wrangler.toml file
+wranglerToml = wranglerToml.replace(/\$\{CF_ACCOUNT_ID\}/g, process.env.CF_ACCOUNT_ID)
+                            .replace(/\$\{CF_ZONE_ID\}/g, process.env.CF_ZONE_ID)
+                            .replace(/\$\{CLOUDFLARE_API_TOKEN\}/g, process.env.CLOUDFLARE_API_TOKEN)
+                            .replace(/\$\{CF_DOMAIN\}/g, process.env.CF_DOMAIN)
+                            .replace(/\$\{RELAY_ROUTES\}/g, process.env.RELAY_ROUTES);
+
+// Write the modified wrangler.toml file back
+fs.writeFileSync('packages/worker/wrangler.toml', wranglerToml);
+
+console.log('Environment variables replaced in wrangler.toml');
+
+// Set the environment variables for the wrangler command
 const envs = {
   CF_ACCOUNT_ID: process.env.CF_ACCOUNT_ID,
   CF_ZONE_ID: process.env.CF_ZONE_ID,
@@ -26,7 +43,7 @@ const envs = {
   RELAY_ROUTES: process.env.RELAY_ROUTES,
 };
 
-execSync('wrangler deploy', {
+execSync('wrangler deploy --config packages/worker/wrangler.toml', {
   stdio: 'inherit',
   env: { ...process.env, ...envs }
 });

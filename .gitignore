@@ -1,5 +1,5 @@
 # Project-specific
-wrangler.toml
+**/wrangler.toml
 
 # Logs
 logs
